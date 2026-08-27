@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkedTeen</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Rubik', sans-serif;
+            background-color: #f4f7fb;
+            color: #212529;
+            font-weight: 400;
+        }
+
+        .navbar-brand,
+        .home-hero h1 {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .home-hero {
+            min-height: calc(100vh - 128px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .home-hero h1 {
+            font-size: clamp(3rem, 4vw, 5rem);
+            font-weight: 800;
+            letter-spacing: 0.02em;
+            color: #2c60d8;
+        }
+
+        .home-hero .lead {
+            font-size: 1.2rem;
+            color: #5f6983;
+        }
+
+        .home-hero .hero-buttons .btn {
+            min-width: 140px;
+        }
+
+        .landing-section {
+            padding: 90px 0;
+        }
+
+        .alt-section {
+            background: #edf3ff;
+            border-radius: 28px;
+        }
+
+        .section-tag {
+            display: inline-block;
+            margin-bottom: 14px;
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: rgba(44, 96, 216, 0.12);
+            color: #2c60d8;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .section-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(2.2rem, 3vw, 3rem);
+            font-weight: 700;
+            color: #1b2b4a;
+            margin-bottom: 18px;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding-left: 0;
+            margin-top: 24px;
+        }
+
+        .feature-list li {
+            position: relative;
+            padding-left: 28px;
+            margin-bottom: 12px;
+            color: #46556e;
+        }
+
+        .feature-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #2c60d8;
+            font-weight: 700;
+        }
+
+        .info-card {
+            background: linear-gradient(135deg, #ffffff, #edf3ff);
+            border: 1px solid rgba(44, 96, 216, 0.15);
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: 0 24px 50px rgba(44, 96, 216, 0.08);
+        }
+
+        .stat-box {
+            display: flex;
+            flex-direction: column;
+            padding: 22px 18px;
+            border-radius: 18px;
+            background: #fff;
+            margin-bottom: 16px;
+            border: 1px solid rgba(44, 96, 216, 0.08);
+        }
+
+        .stat-box strong {
+            font-size: 2rem;
+            color: #2c60d8;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .stat-box span {
+            color: #5f6983;
+        }
+
+        .value-card,
+        .step-card {
+            padding: 28px 22px;
+            border-radius: 22px;
+            background: #fff;
+            box-shadow: 0 12px 25px rgba(17, 24, 39, 0.05);
+            border: 1px solid rgba(17, 24, 39, 0.04);
+        }
+
+        .resource-card,
+        .social-card {
+            display: block;
+            height: 100%;
+            padding: 24px 20px;
+            border: 1px solid rgba(44, 96, 216, 0.12);
+            border-radius: 18px;
+            background: #fff;
+            color: #1b2b4a;
+            text-decoration: none;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 10px 20px rgba(17, 24, 39, 0.03);
+        }
+
+        .resource-card:hover,
+        .social-card:hover {
+            transform: translateY(-4px);
+            text-decoration: none;
+            box-shadow: 0 18px 32px rgba(44, 96, 216, 0.12);
+        }
+
+        .resource-title {
+            display: inline-block;
+            margin-bottom: 10px;
+            font-weight: 700;
+            color: #2c60d8;
+        }
+
+        .resource-card p,
+        .social-card {
+            margin-bottom: 0;
+            color: #5f6983;
+        }
+
+        .social-card {
+            text-align: center;
+            font-weight: 700;
+            font-size: 1.05rem;
+        }
+
+        .icon-circle {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: rgba(44, 96, 216, 0.12);
+            color: #2c60d8;
+            font-weight: 700;
+            margin-bottom: 18px;
+        }
+
+        .value-card h4,
+        .step-card h4 {
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #1b2b4a;
+        }
+
+        .value-card p,
+        .step-card p,
+        .landing-section p {
+            color: #5f6983;
+            line-height: 1.7;
+        }
+
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 46px;
+            height: 46px;
+            margin-bottom: 16px;
+            border-radius: 50%;
+            background: #2c60d8;
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .cta-section {
+            padding-bottom: 110px;
+        }
+    </style>
+</head>
+
+<body>
+    {% include 'components/navbar.html' %}
+    <div class="container mt-5">
+        {% block content %}
+        {% endblock %}
+    </div>
+    {% include 'components/footer.html' %}
+</body>
+
+</html>
