@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5" style="max-width: 900px;">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <span class="section-tag">Student profile</span>
+            <h1 class="section-title mb-0">{{ profile.full_name|default:user.username }}</h1>
+        </div>
+        <a href="{% url 'accounts:onboarding' %}" class="btn btn-outline-primary">Edit profile</a>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-6">
+            <div class="info-card h-100">
+                <h4>About me</h4>
+                <p>{{ profile.bio|default:'Add a short bio so people understand who you are and what you care about.' }}</p>
+                <p><strong>Grade:</strong> {{ profile.grade|default:'Not provided' }}</p>
+                <p><strong>School:</strong> {{ profile.school|default:'Not provided' }}</p>
+                <p><strong>Availability:</strong> {{ profile.availability|default:'Not provided' }}</p>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="info-card h-100">
+                <h4>Why you match</h4>
+                <p>LinkedTeen matches students based on the reasons that actually matter: shared interests, complementary skills, needs, and goals.</p>
+                <p class="mb-0">This profile helps the app explain why a connection makes sense.</p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="value-card h-100">
+                <h4>Interests</h4>
+                <p>{{ profile.interests|default:'Not provided yet.' }}</p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="value-card h-100">
+                <h4>Skills</h4>
+                <p>{{ profile.skills|default:'Not provided yet.' }}</p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="value-card h-100">
+                <h4>I can offer</h4>
+                <p>{{ profile.can_offer|default:'Not provided yet.' }}</p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="value-card h-100">
+                <h4>I am looking for</h4>
+                <p>{{ profile.looking_for|default:'Not provided yet.' }}</p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="value-card h-100">
+                <h4>Goals</h4>
+                <p>{{ profile.goals|default:'Not provided yet.' }}</p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="value-card h-100">
+                <h4>Causes / interests</h4>
+                <p>{{ profile.causes|default:'Not provided yet.' }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

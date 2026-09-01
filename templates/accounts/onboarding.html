@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5" style="max-width: 900px;">
+    <div class="mb-4">
+        <span class="section-tag">Student onboarding</span>
+        <h1 class="section-title mb-3">Tell LinkedTeen how you can help and what you are looking for.</h1>
+    </div>
+
+    <form method="post" class="bg-white p-4 rounded shadow-sm">
+        {% csrf_token %}
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label class="form-label">Full name</label>
+                <input type="text" name="full_name" value="{{ profile.full_name }}" class="form-control">
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Grade</label>
+                <input type="text" name="grade" value="{{ profile.grade }}" class="form-control">
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">School</label>
+                <input type="text" name="school" value="{{ profile.school }}" class="form-control">
+            </div>
+            <div class="col-12">
+                <label class="form-label">About me</label>
+                <textarea name="bio" rows="3" class="form-control">{{ profile.bio }}</textarea>
+            </div>
+            <div class="col-12">
+                <label class="form-label">Interests</label>
+                <textarea name="interests" rows="2" class="form-control" placeholder="AI, public speaking, engineering, design, social impact">{{ profile.interests }}</textarea>
+            </div>
+            <div class="col-12">
+                <label class="form-label">Skills</label>
+                <textarea name="skills" rows="2" class="form-control" placeholder="Python, video editing, Canva, leadership, writing">{{ profile.skills }}</textarea>
+            </div>
+            <div class="col-12">
+                <label class="form-label">What I can offer</label>
+                <textarea name="can_offer" rows="2" class="form-control" placeholder="Python, public speaking, event planning">{{ profile.can_offer }}</textarea>
+            </div>
+            <div class="col-12">
+                <label class="form-label">I am looking for</label>
+                <textarea name="looking_for" rows="2" class="form-control" placeholder="AI projects, engineering mentor, leadership role, research experience">{{ profile.looking_for }}</textarea>
+            </div>
+            <div class="col-12">
+                <label class="form-label">Goals</label>
+                <textarea name="goals" rows="2" class="form-control" placeholder="Build projects, gain leadership experience, explore engineering, find mentors">{{ profile.goals }}</textarea>
+            </div>
+            <div class="col-12">
+                <label class="form-label">Causes / interests</label>
+                <textarea name="causes" rows="2" class="form-control" placeholder="Accessibility, climate, education, youth leadership, technology">{{ profile.causes }}</textarea>
+            </div>
+            <div class="col-12">
+                <label class="form-label">Availability</label>
+                <textarea name="availability" rows="2" class="form-control" placeholder="2-4 hours per week, weekends, afternoons, school year only">{{ profile.availability }}</textarea>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between mt-4">
+            <a href="{% url 'dashboard' %}" class="btn btn-outline-primary">Skip for now</a>
+            <button type="submit" class="btn btn-primary">Save profile</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

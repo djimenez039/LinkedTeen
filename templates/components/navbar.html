@@ -1,7 +1,11 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container">
         <a class="navbar-brand" href="/">LinkedTeen</a>
-        <div class="ms-auto">
+        <div class="ms-auto d-flex align-items-center gap-2 flex-wrap">
+            <a href="{% url 'dashboard' %}" class="btn btn-link text-white text-decoration-none">Dashboard</a>
+            <a href="{% url 'clubs' %}" class="btn btn-link text-white text-decoration-none">Clubs</a>
+            <a href="{% url 'opportunities' %}" class="btn btn-link text-white text-decoration-none">Opportunities</a>
+            <a href="{% url 'accounts:profile' %}" class="btn btn-link text-white text-decoration-none">Profile</a>
             <a href="{% url 'accounts:login' %}" class="btn btn-light me-2">Login</a>
             <a href="{% url 'accounts:register' %}" class="btn btn-warning">Register</a>
         </div>
