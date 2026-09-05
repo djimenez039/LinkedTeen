@@ -4,18 +4,17 @@
 
 <section class="home-hero">
     <div class="container text-center">
-        <h1 class="display-1 mb-4">
-            LinkedTeen
-        </h1>
+        <span class="section-tag">A student-first connection platform</span>
+        <h1 class="display-1 mb-4">Find your people. Find where you fit.</h1>
         <p class="lead mx-auto mb-4" style="max-width: 760px;">
-            For high school students who want to discover opportunities, meet mentors, and build a future they’re excited about.
+            LinkedTeen connects your interests, skills, and goals to people, clubs, projects, and opportunities that need what you bring.
         </p>
         <div class="hero-buttons d-flex justify-content-center gap-3 flex-wrap">
-            <a href="#about" class="btn btn-outline-primary btn-lg shadow-sm">
-                About Us
+            <a href="{% url 'accounts:register' %}" class="btn btn-primary btn-lg shadow-sm">
+                Build your profile
             </a>
-            <a href="#why-us" class="btn btn-primary btn-lg shadow-sm">
-                Why LinkedTeen
+            <a href="#how-it-works" class="btn btn-outline-primary btn-lg shadow-sm">
+                See how it works
             </a>
         </div>
     </div>
@@ -35,7 +34,7 @@
                     We help teens connect with mentors, clubs, organizations, events, and resources that match their goals,
                     interests, and future plans.
                 </p>
-            \       <ul class="feature-list">
+            <ul class="feature-list">
                     <li>Explore opportunities beyond the classroom</li>
                     <li>Connect with people who can guide your journey</li>
                     <li>Build confidence while figuring out your next step</li>

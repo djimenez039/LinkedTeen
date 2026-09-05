@@ -45,3 +45,10 @@ class AuthFlowTests(TestCase):
         response = self.client.get(reverse('accounts:profile'))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Student profile')
+
+    def test_logout_returns_to_home(self):
+        user = get_user_model().objects.create_user(username='logoutuser', password='StrongPass123!')
+        self.client.login(username='logoutuser', password='StrongPass123!')
+        response = self.client.post(reverse('accounts:logout'))
+        self.assertRedirects(response, reverse('home'))
+        self.assertNotIn('_auth_user_id', self.client.session)
