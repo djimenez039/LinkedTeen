@@ -9,6 +9,7 @@ class Club(models.Model):
     needs = models.TextField(blank=True)
     skills_needed = models.TextField(blank=True)
     time_commitment = models.CharField(max_length=120, blank=True)
+    keywords = models.TextField(blank=True, help_text='Comma-separated keywords describing this club.')
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, related_name='clubs')
     created_at = models.DateTimeField(auto_now_add=True)
 

@@ -23,10 +23,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-&ao78)%e6q@zc!ga%3q1p365(spj_633xezcfc55&nir_o3rz*'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False 
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'testserver']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'testserver', 'www.linkedteens.club', 'linkedteens.club']
 
+CSRF_TRUSTED_ORIGINS = ['https://linkedteens.club', 'https://www.linkedteens.club']
 
 # Application definition
 
@@ -127,4 +128,9 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
 AUTH_USER_MODEL = 'accounts.CustomUser'
+
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

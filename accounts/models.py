@@ -31,6 +31,8 @@ class StudentProfile(models.Model):
     goals = models.TextField(blank=True)
     causes = models.TextField(blank=True)
     availability = models.TextField(blank=True)
+    keywords = models.TextField(blank=True, help_text='Comma-separated keywords describing the student.')
+    club_interest = models.CharField(max_length=200, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

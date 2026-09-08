@@ -54,6 +54,21 @@
                 <label class="form-label">Availability</label>
                 <textarea name="availability" rows="2" class="form-control" placeholder="2-4 hours per week, weekends, afternoons, school year only">{{ profile.availability }}</textarea>
             </div>
+            <div class="col-12">
+                <label class="form-label">Keyword survey</label>
+                <textarea name="keywords" rows="2" class="form-control" placeholder="technology, leadership, public speaking, design, volunteering, social impact">{{ profile.keywords }}</textarea>
+                <div class="form-text">Use 5-10 short keywords that describe what you care about most.</div>
+            </div>
+            <div class="col-12">
+                <label class="form-label" for="club_interest">Club interest</label>
+                <select name="club_interest" id="club_interest" class="form-select">
+                    <option value="">Select a club you are interested in</option>
+                    {% for value, label in club_choices %}
+                        <option value="{{ value }}" {% if profile.club_interest == value %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+                <div class="form-text">Choose from the approved club list. No custom club entries are allowed.</div>
+            </div>
         </div>
 
         <div class="d-flex justify-content-between mt-4">

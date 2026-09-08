@@ -3,6 +3,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 
+from clubs.constants import CLUB_CHOICES
 from .forms import CustomUserCreationForm
 from .models import StudentProfile
 
@@ -47,10 +48,12 @@ def onboarding_view(request):
         profile.goals = request.POST.get('goals', profile.goals)
         profile.causes = request.POST.get('causes', profile.causes)
         profile.availability = request.POST.get('availability', profile.availability)
+        profile.keywords = request.POST.get('keywords', profile.keywords)
+        profile.club_interest = request.POST.get('club_interest', profile.club_interest)
         profile.save()
         return redirect('dashboard')
 
-    return render(request, 'accounts/onboarding.html', {'profile': profile})
+    return render(request, 'accounts/onboarding.html', {'profile': profile, 'club_choices': CLUB_CHOICES})
 
 
 @login_required

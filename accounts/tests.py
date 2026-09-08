@@ -38,6 +38,8 @@ class AuthFlowTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'What I can offer')
         self.assertContains(response, 'I am looking for')
+        self.assertContains(response, 'Keyword survey')
+        self.assertContains(response, 'Technology Club')
 
     def test_profile_page_loads_for_logged_in_user(self):
         user = get_user_model().objects.create_user(username='profileviewer', password='StrongPass123!')
