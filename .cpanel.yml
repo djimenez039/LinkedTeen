@@ -1,0 +1,39 @@
+--- 
+
+deployment: 
+
+  tasks: 
+
+    - export DEPLOYPATH=/home/w657lew2w9vm/linkedteen/ 
+
+    - /bin/cp -R accounts $DEPLOYPATH 
+
+    - /bin/cp -R applications $DEPLOYPATH 
+
+    - /bin/cp -R clubs $DEPLOYPATH 
+
+    - /bin/cp -R config $DEPLOYPATH 
+
+    - /bin/cp -R connections $DEPLOYPATH 
+
+    - /bin/cp -R core $DEPLOYPATH 
+
+    - /bin/cp -R dashboards $DEPLOYPATH 
+
+    - /bin/cp -R events $DEPLOYPATH 
+
+    - /bin/cp -R notifications $DEPLOYPATH 
+
+    - /bin/cp -R opportunities $DEPLOYPATH 
+
+    - /bin/cp -R organizations $DEPLOYPATH 
+
+    - /bin/cp -R users $DEPLOYPATH 
+
+    - /bin/cp -R templates $DEPLOYPATH 
+
+    - /bin/cp manage.py $DEPLOYPATH 
+
+    - /bin/cp passenger_wsgi.py $DEPLOYPATH 
+
+    - /bin/cp requirements.txt $DEPLOYPATH 
