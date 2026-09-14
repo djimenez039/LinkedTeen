@@ -25,9 +25,29 @@ SECRET_KEY = 'django-insecure-&ao78)%e6q@zc!ga%3q1p365(spj_633xezcfc55&nir_o3rz*
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False 
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'testserver', 'www.linkedteens.club', 'linkedteens.club','linkedteen-production.up.railway.app']
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'localhost',
+    'testserver',
+    'www.linkedteens.club',
+    'linkedteens.club',
+    'linkedteen-production.up.railway.app',
+    'www.linkedteen-production.up.railway.app',
+]
 
-CSRF_TRUSTED_ORIGINS = ['https://linkedteens.club', 'https://www.linkedteens.club']
+CSRF_TRUSTED_ORIGINS = [
+    'https://linkedteens.club',
+    'https://www.linkedteens.club',
+    'https://linkedteen-production.up.railway.app',
+    'https://www.linkedteen-production.up.railway.app',
+]
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+# Keep Django cookies valid behind Railway HTTPS proxy and custom domains.
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SAMESITE = 'Lax'
+CSRF_COOKIE_SAMESITE = 'Lax'
 
 # Application definition
 
@@ -137,10 +157,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# Ensure static directory exists in local and Railway deployments.
+STATIC_ROOT.mkdir(exist_ok=True, parents=True)
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
