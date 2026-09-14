@@ -22,6 +22,15 @@ class AuthFlowTests(TestCase):
         })
         self.assertRedirects(response, reverse('dashboard'))
 
+    def test_login_for_user_without_profile_does_not_crash(self):
+        user = get_user_model().objects.create_user(username='noprofile', password='StrongPass123!')
+        response = self.client.post(reverse('accounts:login'), {
+            'username': 'noprofile',
+            'password': 'StrongPass123!',
+        })
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse('dashboard'))
+
     def test_register_redirects_to_onboarding(self):
         response = self.client.post(reverse('accounts:register'), {
             'username': 'newuser',

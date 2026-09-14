@@ -3,6 +3,7 @@ import re
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
+from accounts.models import StudentProfile
 from clubs.constants import CLUB_CHOICES
 
 
@@ -54,8 +55,8 @@ def _match_reason(club_name, overlap):
 
 @login_required
 def dashboard(request):
-    profile = getattr(request.user, 'student_profile', None)
-    student_name = profile.full_name.split()[0] if profile and profile.full_name else request.user.username
+    profile, _ = StudentProfile.objects.get_or_create(user=request.user)
+    student_name = profile.full_name.split()[0] if profile.full_name else request.user.username
 
     student_keywords = set()
     if profile:
