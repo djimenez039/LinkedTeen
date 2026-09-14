@@ -107,3 +107,55 @@ CLUB_CHOICES = [
     ("Wise Moves", "Wise Moves"),
     ("Women in Surgery", "Women in Surgery"),
 ]
+
+CLUB_KEYWORD_HINTS = {
+    'technology': ['technology', 'engineering', 'innovation'],
+    'science': ['science', 'research', 'innovation'],
+    'math': ['math', 'problem solving', 'STEM'],
+    'writing': ['writing', 'storytelling', 'creativity'],
+    'art': ['art', 'design', 'creativity'],
+    'media': ['media', 'communication', 'storytelling'],
+    'leadership': ['leadership', 'service', 'community'],
+    'service': ['service', 'community', 'leadership'],
+    'health': ['health', 'wellness', 'care'],
+    'cultural': ['culture', 'community', 'belonging'],
+    'language': ['language', 'communication', 'culture'],
+    'debate': ['debate', 'speech', 'leadership'],
+    'politics': ['politics', 'leadership', 'civic engagement'],
+    'environment': ['environment', 'sustainability', 'service'],
+    'sports': ['sports', 'wellness', 'teamwork'],
+    'music': ['music', 'performance', 'creativity'],
+    'theatre': ['theatre', 'performance', 'creativity'],
+    'education': ['education', 'mentorship', 'learning'],
+    'business': ['business', 'leadership', 'innovation'],
+    'finance': ['finance', 'strategy', 'leadership'],
+    'law': ['law', 'service', 'leadership'],
+    'social': ['social impact', 'community', 'service'],
+    'impact': ['social impact', 'service', 'community'],
+    'women': ['women', 'leadership', 'community'],
+    'girls': ['girls', 'leadership', 'community'],
+    'support': ['support', 'community', 'care'],
+    'care': ['care', 'community', 'support'],
+    'project': ['projects', 'innovation', 'leadership'],
+    'robotics': ['robotics', 'engineering', 'STEM'],
+    'club': ['community', 'leadership', 'connection'],
+}
+
+
+def get_club_keywords(name):
+    lowered = name.lower()
+    keywords = []
+    for token, values in CLUB_KEYWORD_HINTS.items():
+        if token in lowered:
+            keywords.extend(values)
+    if not keywords:
+        words = [word for word in lowered.replace('&', ' ').replace('-', ' ').split() if len(word) > 3]
+        keywords = words[:3]
+    unique = []
+    seen = set()
+    for item in keywords:
+        clean = ' '.join(item.split())
+        if clean and clean.lower() not in seen:
+            unique.append(clean)
+            seen.add(clean.lower())
+    return unique[:3]

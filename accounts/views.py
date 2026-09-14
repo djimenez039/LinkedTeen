@@ -7,6 +7,41 @@ from clubs.constants import CLUB_CHOICES
 from .forms import CustomUserCreationForm
 from .models import StudentProfile
 
+INTEREST_OPTIONS = [
+    'AI', 'Public speaking', 'Leadership', 'Engineering', 'Design', 'Social impact',
+    'Technology', 'Research', 'Writing', 'Volunteering', 'Environment', 'Culture',
+    'Music', 'Art', 'Sports', 'Health', 'Community service', 'Business', 'Finance', 'Law',
+]
+SKILL_OPTIONS = [
+    'Python', 'Video editing', 'Canva', 'Leadership', 'Writing', 'Public speaking',
+    'Event planning', 'Research', 'Design', 'Coding', 'Marketing', 'Photography', 'Data analysis',
+]
+OFFER_OPTIONS = [
+    'Python', 'Public speaking', 'Event planning', 'Canva', 'Video editing', 'Leadership',
+    'Research', 'Design', 'Writing', 'Mentorship', 'Project planning',
+]
+LOOKING_FOR_OPTIONS = [
+    'AI projects', 'Engineering mentor', 'Leadership role', 'Research experience',
+    'Mentorship', 'Design feedback', 'Public speaking opportunities', 'Community project',
+    'Students building social impact projects', 'Startup ideas', 'Career exploration',
+]
+GOAL_OPTIONS = [
+    'Build projects', 'Gain leadership experience', 'Explore engineering', 'Find mentors',
+    'Develop public speaking', 'Create social impact', 'Learn new tools', 'Career exploration',
+]
+AVAILABILITY_OPTIONS = [
+    '2-4 hours per week', 'Weekends', 'Afternoons', 'School year only', 'Summer only', 'Evenings',
+]
+
+PROFILE_OPTION_SETS = {
+    'interests': INTEREST_OPTIONS,
+    'skills': SKILL_OPTIONS,
+    'can_offer': OFFER_OPTIONS,
+    'looking_for': LOOKING_FOR_OPTIONS,
+    'goals': GOAL_OPTIONS,
+    'availability': AVAILABILITY_OPTIONS,
+}
+
 
 def login_view(request):
     form = AuthenticationForm(request, data=request.POST or None)
@@ -41,19 +76,20 @@ def onboarding_view(request):
         profile.grade = request.POST.get('grade', profile.grade)
         profile.school = request.POST.get('school', profile.school)
         profile.bio = request.POST.get('bio', profile.bio)
-        profile.interests = request.POST.get('interests', profile.interests)
-        profile.skills = request.POST.get('skills', profile.skills)
-        profile.can_offer = request.POST.get('can_offer', profile.can_offer)
-        profile.looking_for = request.POST.get('looking_for', profile.looking_for)
-        profile.goals = request.POST.get('goals', profile.goals)
-        profile.causes = request.POST.get('causes', profile.causes)
-        profile.availability = request.POST.get('availability', profile.availability)
-        profile.keywords = request.POST.get('keywords', profile.keywords)
-        profile.club_interest = request.POST.get('club_interest', profile.club_interest)
+        for field_name, options in PROFILE_OPTION_SETS.items():
+            values = request.POST.getlist(field_name)
+            if values:
+                setattr(profile, field_name, ', '.join(values))
+            else:
+                setattr(profile, field_name, '')
+        profile.club_interest = ', '.join(request.POST.getlist('club_interest'))
         profile.save()
         return redirect('dashboard')
 
-    return render(request, 'accounts/onboarding.html', {'profile': profile, 'club_choices': CLUB_CHOICES})
+    context = {'profile': profile, 'club_choices': CLUB_CHOICES}
+    for key, value in PROFILE_OPTION_SETS.items():
+        context[f'{key}_options'] = value
+    return render(request, 'accounts/onboarding.html', context)
 
 
 @login_required

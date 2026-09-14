@@ -28,46 +28,60 @@
             </div>
             <div class="col-12">
                 <label class="form-label">Interests</label>
-                <textarea name="interests" rows="2" class="form-control" placeholder="AI, public speaking, engineering, design, social impact">{{ profile.interests }}</textarea>
+                <select name="interests" class="form-select" multiple size="8">
+                    {% for option in interests_options %}
+                        <option value="{{ option }}" {% if option in profile.interests %}selected{% endif %}>{{ option }}</option>
+                    {% endfor %}
+                </select>
             </div>
             <div class="col-12">
                 <label class="form-label">Skills</label>
-                <textarea name="skills" rows="2" class="form-control" placeholder="Python, video editing, Canva, leadership, writing">{{ profile.skills }}</textarea>
+                <select name="skills" class="form-select" multiple size="8">
+                    {% for option in skills_options %}
+                        <option value="{{ option }}" {% if option in profile.skills %}selected{% endif %}>{{ option }}</option>
+                    {% endfor %}
+                </select>
             </div>
             <div class="col-12">
                 <label class="form-label">What I can offer</label>
-                <textarea name="can_offer" rows="2" class="form-control" placeholder="Python, public speaking, event planning">{{ profile.can_offer }}</textarea>
+                <select name="can_offer" class="form-select" multiple size="8">
+                    {% for option in can_offer_options %}
+                        <option value="{{ option }}" {% if option in profile.can_offer %}selected{% endif %}>{{ option }}</option>
+                    {% endfor %}
+                </select>
             </div>
             <div class="col-12">
                 <label class="form-label">I am looking for</label>
-                <textarea name="looking_for" rows="2" class="form-control" placeholder="AI projects, engineering mentor, leadership role, research experience">{{ profile.looking_for }}</textarea>
+                <select name="looking_for" class="form-select" multiple size="8">
+                    {% for option in looking_for_options %}
+                        <option value="{{ option }}" {% if option in profile.looking_for %}selected{% endif %}>{{ option }}</option>
+                    {% endfor %}
+                </select>
             </div>
             <div class="col-12">
                 <label class="form-label">Goals</label>
-                <textarea name="goals" rows="2" class="form-control" placeholder="Build projects, gain leadership experience, explore engineering, find mentors">{{ profile.goals }}</textarea>
-            </div>
-            <div class="col-12">
-                <label class="form-label">Causes / interests</label>
-                <textarea name="causes" rows="2" class="form-control" placeholder="Accessibility, climate, education, youth leadership, technology">{{ profile.causes }}</textarea>
+                <select name="goals" class="form-select" multiple size="8">
+                    {% for option in goals_options %}
+                        <option value="{{ option }}" {% if option in profile.goals %}selected{% endif %}>{{ option }}</option>
+                    {% endfor %}
+                </select>
             </div>
             <div class="col-12">
                 <label class="form-label">Availability</label>
-                <textarea name="availability" rows="2" class="form-control" placeholder="2-4 hours per week, weekends, afternoons, school year only">{{ profile.availability }}</textarea>
-            </div>
-            <div class="col-12">
-                <label class="form-label">Keyword survey</label>
-                <textarea name="keywords" rows="2" class="form-control" placeholder="technology, leadership, public speaking, design, volunteering, social impact">{{ profile.keywords }}</textarea>
-                <div class="form-text">Use 5-10 short keywords that describe what you care about most.</div>
+                <select name="availability" class="form-select" multiple size="6">
+                    {% for option in availability_options %}
+                        <option value="{{ option }}" {% if option in profile.availability %}selected{% endif %}>{{ option }}</option>
+                    {% endfor %}
+                </select>
             </div>
             <div class="col-12">
                 <label class="form-label" for="club_interest">Club interest</label>
-                <select name="club_interest" id="club_interest" class="form-select">
-                    <option value="">Select a club you are interested in</option>
+                <select name="club_interest" id="club_interest" class="form-select" multiple size="8">
                     {% for value, label in club_choices %}
-                        <option value="{{ value }}" {% if profile.club_interest == value %}selected{% endif %}>{{ label }}</option>
+                        <option value="{{ value }}" {% if value in profile.club_interest %}selected{% endif %}>{{ label }}</option>
                     {% endfor %}
                 </select>
-                <div class="form-text">Choose from the approved club list. No custom club entries are allowed.</div>
+                <div class="form-text">Choose any clubs that match your goals.</div>
             </div>
         </div>
 
