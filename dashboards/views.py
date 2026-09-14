@@ -55,31 +55,31 @@ def _match_reason(club_name, overlap):
 
 @login_required
 def dashboard(request):
-    profile, _ = StudentProfile.objects.get_or_create(user=request.user)
-    student_name = profile.full_name.split()[0] if profile.full_name else request.user.username
+    profile = StudentProfile.objects.filter(user=request.user).first()
+    if profile is None:
+        profile = StudentProfile(user=request.user)
+
+    full_name = (profile.full_name or '').strip()
+    student_name = full_name.split()[0] if full_name else request.user.username
 
     student_keywords = set()
-    if profile:
-        student_keywords.update(_tokenize_keywords(profile.keywords))
-        student_keywords.update(_tokenize_keywords(profile.interests))
-        student_keywords.update(_tokenize_keywords(profile.skills))
-        student_keywords.update(_tokenize_keywords(profile.can_offer))
-        student_keywords.update(_tokenize_keywords(profile.looking_for))
-        student_keywords.update(_tokenize_keywords(profile.goals))
-        student_keywords.update(_tokenize_keywords(profile.causes))
-        student_keywords.update(_tokenize_keywords(profile.club_interest))
+    for field_name in [
+        'keywords', 'interests', 'skills', 'can_offer', 'looking_for', 'goals', 'causes', 'club_interest'
+    ]:
+        value = getattr(profile, field_name, '') or ''
+        student_keywords.update(_tokenize_keywords(value))
 
-    focus_areas = []
-    if student_keywords:
-        focus_areas = sorted(student_keywords)[:5]
-    else:
-        focus_areas = DEFAULT_FOCUS_AREAS
+    focus_areas = sorted(student_keywords)[:5] if student_keywords else DEFAULT_FOCUS_AREAS
 
     offer = (
-        [item.strip() for item in profile.can_offer.split(',') if item.strip()] if profile and profile.can_offer else DEFAULT_OFFER
+        [item.strip() for item in (profile.can_offer or '').split(',') if item.strip()]
+        if (profile.can_offer or '').strip()
+        else DEFAULT_OFFER
     )
     looking_for = (
-        [item.strip() for item in profile.looking_for.split(',') if item.strip()] if profile and profile.looking_for else DEFAULT_LOOKING_FOR
+        [item.strip() for item in (profile.looking_for or '').split(',') if item.strip()]
+        if (profile.looking_for or '').strip()
+        else DEFAULT_LOOKING_FOR
     )
 
     ranked_clubs = []

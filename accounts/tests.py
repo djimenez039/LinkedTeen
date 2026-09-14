@@ -31,6 +31,15 @@ class AuthFlowTests(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, reverse('dashboard'))
 
+    def test_dashboard_loads_after_login_redirect(self):
+        user = get_user_model().objects.create_user(username='followredirect', password='StrongPass123!')
+        response = self.client.post(reverse('accounts:login'), {
+            'username': 'followredirect',
+            'password': 'StrongPass123!',
+        }, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Your next connection is waiting')
+
     def test_register_redirects_to_onboarding(self):
         response = self.client.post(reverse('accounts:register'), {
             'username': 'newuser',
