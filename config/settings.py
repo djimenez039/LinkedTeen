@@ -45,13 +45,13 @@ CSRF_TRUSTED_ORIGINS = [
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 # Keep Django cookies valid behind Railway HTTPS proxy and custom domains.
-# This is required for login form submissions from Railway and custom-domain traffic.
+# Do not force a shared parent-domain cookie here; it can break auth on the live site.
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SAMESITE = 'Lax'
 CSRF_COOKIE_SAMESITE = 'Lax'
-SESSION_COOKIE_DOMAIN = '.linkedteens.club'
-CSRF_COOKIE_DOMAIN = '.linkedteens.club'
+SESSION_COOKIE_DOMAIN = None
+CSRF_COOKIE_DOMAIN = None
 
 # Application definition
 
