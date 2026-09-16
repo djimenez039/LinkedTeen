@@ -1,10 +1,10 @@
 from django.contrib.auth import login, logout
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 
 from clubs.constants import CLUB_CHOICES
-from .forms import CustomUserCreationForm
+from .forms import CustomUserCreationForm, EmailOrUsernameAuthenticationForm
 from .models import StudentProfile
 
 INTEREST_OPTIONS = [
@@ -16,19 +16,6 @@ SKILL_OPTIONS = [
     'Python', 'Video editing', 'Canva', 'Leadership', 'Writing', 'Public speaking',
     'Event planning', 'Research', 'Design', 'Coding', 'Marketing', 'Photography', 'Data analysis',
 ]
-OFFER_OPTIONS = [
-    'Python', 'Public speaking', 'Event planning', 'Canva', 'Video editing', 'Leadership',
-    'Research', 'Design', 'Writing', 'Mentorship', 'Project planning',
-]
-LOOKING_FOR_OPTIONS = [
-    'AI projects', 'Engineering mentor', 'Leadership role', 'Research experience',
-    'Mentorship', 'Design feedback', 'Public speaking opportunities', 'Community project',
-    'Students building social impact projects', 'Startup ideas', 'Career exploration',
-]
-GOAL_OPTIONS = [
-    'Build projects', 'Gain leadership experience', 'Explore engineering', 'Find mentors',
-    'Develop public speaking', 'Create social impact', 'Learn new tools', 'Career exploration',
-]
 AVAILABILITY_OPTIONS = [
     '2-4 hours per week', 'Weekends', 'Afternoons', 'School year only', 'Summer only', 'Evenings',
 ]
@@ -36,15 +23,14 @@ AVAILABILITY_OPTIONS = [
 PROFILE_OPTION_SETS = {
     'interests': INTEREST_OPTIONS,
     'skills': SKILL_OPTIONS,
-    'can_offer': OFFER_OPTIONS,
-    'looking_for': LOOKING_FOR_OPTIONS,
-    'goals': GOAL_OPTIONS,
     'availability': AVAILABILITY_OPTIONS,
 }
 
 
 def login_view(request):
-    form = AuthenticationForm(request, data=request.POST or None)
+    if request.user.is_authenticated:
+        return redirect('dashboard')
+    form = EmailOrUsernameAuthenticationForm(request, data=request.POST or None)
     if request.method == 'POST' and form.is_valid():
         login(request, form.get_user())
         return redirect('dashboard')
@@ -53,6 +39,8 @@ def login_view(request):
 
 
 def register_view(request):
+    if request.user.is_authenticated:
+        return redirect('dashboard')
     form = CustomUserCreationForm(request.POST or None)
     if request.method == 'POST' and form.is_valid():
         user = form.save()
@@ -86,9 +74,11 @@ def onboarding_view(request):
         profile.save()
         return redirect('dashboard')
 
-    context = {'profile': profile, 'club_choices': CLUB_CHOICES}
+    context = {'profile': profile, 'club_choices': CLUB_CHOICES, 'grade_choices': StudentProfile.GRADE_CHOICES}
     for key, value in PROFILE_OPTION_SETS.items():
         context[f'{key}_options'] = value
+        context[f'{key}_selected'] = [item.strip() for item in getattr(profile, key).split(',') if item.strip()]
+    context['club_interest_selected'] = [item.strip() for item in profile.club_interest.split(',') if item.strip()]
     return render(request, 'accounts/onboarding.html', context)
 
 
@@ -96,3 +86,16 @@ def onboarding_view(request):
 def profile_view(request):
     profile, _ = StudentProfile.objects.get_or_create(user=request.user)
     return render(request, 'accounts/profile.html', {'profile': profile})
+
+
+@login_required
+def settings_view(request):
+    if request.method == 'POST':
+        request.user.username = request.POST.get('username', request.user.username).strip()
+        request.user.email = request.POST.get('email', request.user.email).strip()
+        if request.user.is_staff:
+            request.user.role = request.POST.get('role', request.user.role)
+        request.user.save(update_fields=['username', 'email', 'role'])
+        messages.success(request, 'Your account settings were updated.')
+        return redirect('accounts:settings')
+    return render(request, 'accounts/settings.html', {'role_choices': request.user.ROLE_CHOICES})

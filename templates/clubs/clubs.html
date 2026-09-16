@@ -6,25 +6,31 @@
         <div>
             <span class="section-tag">Clubs</span>
             <h1 class="section-title mb-0">Find the groups that match your interests.</h1>
+            <p class="mb-0">Where your skills are needed.</p>
         </div>
     </div>
+    <form method="get" class="row g-2 mb-4">
+        <div class="col-md-7"><input name="q" value="{{ query }}" class="form-control" placeholder="Search clubs"></div>
+        <div class="col-md-3"><select name="interest" class="form-select"><option value="">All interests</option>{% for option in interest_options %}<option value="{{ option }}" {% if interest == option %}selected{% endif %}>{{ option }}</option>{% endfor %}</select></div>
+        <div class="col-md-2"><button class="btn btn-primary w-100">Search</button></div>
+    </form>
 
     <div class="row g-4">
         {% for club in clubs %}
         <div class="col-lg-6">
             <div class="step-card h-100">
                 <span class="step-number">{{ forloop.counter }}</span>
-                <h4>{{ club.name }}</h4>
+                <h4><a href="{% url 'club_detail' club.id %}" class="text-decoration-none">{{ club.name }}</a></h4>
                 <p>{{ club.description }}</p>
                 <div class="d-flex flex-wrap gap-2 mb-3">
-                    {% for keyword in club.keywords %}
+                    {% for keyword in club.keyword_list %}
                     <span class="section-tag mb-0">{{ keyword }}</span>
                     {% endfor %}
                 </div>
                 <p><strong>Needs:</strong> {{ club.needs }}</p>
                 <p><strong>Skills needed:</strong> {{ club.skills_needed }}</p>
-                <p><strong>Time commitment:</strong> {{ club.time_commitment }}</p>
-                <button class="btn btn-primary">Join this club</button>
+                <p><strong>Availability:</strong> {{ club.availability }}</p>
+                <a class="btn btn-primary" href="{% url 'club_detail' club.id %}">Join this club</a>
             </div>
         </div>
         {% endfor %}

@@ -7,6 +7,7 @@
             <a href="{% url 'clubs' %}" class="btn btn-link text-white text-decoration-none">Clubs</a>
             <a href="{% url 'opportunities' %}" class="btn btn-link text-white text-decoration-none">Opportunities</a>
             <a href="{% url 'accounts:profile' %}" class="btn btn-link text-white text-decoration-none">Profile</a>
+            <a href="{% url 'accounts:settings' %}" class="btn btn-link text-white text-decoration-none">Settings</a>
             <form method="post" action="{% url 'accounts:logout' %}" class="d-inline">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-light">Log out</button>

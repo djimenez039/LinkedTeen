@@ -23,3 +23,12 @@ class Opportunity(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class OpportunityPost(models.Model):
+    author = models.ForeignKey('accounts.CustomUser', on_delete=models.CASCADE, related_name='opportunity_posts')
+    body = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']

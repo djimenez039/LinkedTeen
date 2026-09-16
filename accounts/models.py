@@ -19,9 +19,10 @@ class CustomUser(AbstractUser):
 
 
 class StudentProfile(models.Model):
+    GRADE_CHOICES = [(str(grade), f'Grade {grade}') for grade in range(9, 13)] + [('graduate', 'Graduate / alumni')]
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='student_profile')
     full_name = models.CharField(max_length=120, blank=True)
-    grade = models.CharField(max_length=30, blank=True)
+    grade = models.CharField(max_length=30, choices=GRADE_CHOICES, blank=True)
     school = models.CharField(max_length=120, blank=True)
     bio = models.TextField(blank=True)
     interests = models.TextField(blank=True)

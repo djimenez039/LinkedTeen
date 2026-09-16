@@ -4,7 +4,7 @@
 <div class="container py-5" style="max-width: 900px;">
     <div class="mb-4">
         <span class="section-tag">Student onboarding</span>
-        <h1 class="section-title mb-3">Tell LinkedTeens how you can help and what you are looking for.</h1>
+        <h1 class="section-title mb-3">Tell LinkedTeens about your interests, skills, and availability.</h1>
     </div>
 
     <form method="post" class="bg-white p-4 rounded shadow-sm">
@@ -16,7 +16,10 @@
             </div>
             <div class="col-md-3">
                 <label class="form-label">Grade</label>
-                <input type="text" name="grade" value="{{ profile.grade }}" class="form-control">
+                <select name="grade" class="form-select">
+                    <option value="">Select grade</option>
+                    {% for value, label in grade_choices %}<option value="{{ value }}" {% if profile.grade == value %}selected{% endif %}>{{ label }}</option>{% endfor %}
+                </select>
             </div>
             <div class="col-md-3">
                 <label class="form-label">School</label>
@@ -28,60 +31,56 @@
             </div>
             <div class="col-12">
                 <label class="form-label">Interests</label>
-                <select name="interests" class="form-select" multiple size="8">
+                <div class="row row-cols-1 row-cols-md-3 g-2">
                     {% for option in interests_options %}
-                        <option value="{{ option }}" {% if option in profile.interests %}selected{% endif %}>{{ option }}</option>
+                        <div class="col">
+                            <label class="form-check border rounded p-2 h-100">
+                                <input class="form-check-input" type="checkbox" name="interests" value="{{ option }}" {% if option in interests_selected %}checked{% endif %}>
+                                <span class="form-check-label">{{ option }}</span>
+                            </label>
+                        </div>
                     {% endfor %}
-                </select>
+                </div>
             </div>
             <div class="col-12">
                 <label class="form-label">Skills</label>
-                <select name="skills" class="form-select" multiple size="8">
+                <div class="row row-cols-1 row-cols-md-3 g-2">
                     {% for option in skills_options %}
-                        <option value="{{ option }}" {% if option in profile.skills %}selected{% endif %}>{{ option }}</option>
+                        <div class="col">
+                            <label class="form-check border rounded p-2 h-100">
+                                <input class="form-check-input" type="checkbox" name="skills" value="{{ option }}" {% if option in skills_selected %}checked{% endif %}>
+                                <span class="form-check-label">{{ option }}</span>
+                            </label>
+                        </div>
                     {% endfor %}
-                </select>
-            </div>
-            <div class="col-12">
-                <label class="form-label">What I can offer</label>
-                <select name="can_offer" class="form-select" multiple size="8">
-                    {% for option in can_offer_options %}
-                        <option value="{{ option }}" {% if option in profile.can_offer %}selected{% endif %}>{{ option }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="col-12">
-                <label class="form-label">I am looking for</label>
-                <select name="looking_for" class="form-select" multiple size="8">
-                    {% for option in looking_for_options %}
-                        <option value="{{ option }}" {% if option in profile.looking_for %}selected{% endif %}>{{ option }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="col-12">
-                <label class="form-label">Goals</label>
-                <select name="goals" class="form-select" multiple size="8">
-                    {% for option in goals_options %}
-                        <option value="{{ option }}" {% if option in profile.goals %}selected{% endif %}>{{ option }}</option>
-                    {% endfor %}
-                </select>
+                </div>
             </div>
             <div class="col-12">
                 <label class="form-label">Availability</label>
-                <select name="availability" class="form-select" multiple size="6">
+                <div class="row row-cols-1 row-cols-md-3 g-2">
                     {% for option in availability_options %}
-                        <option value="{{ option }}" {% if option in profile.availability %}selected{% endif %}>{{ option }}</option>
+                        <div class="col">
+                            <label class="form-check border rounded p-2 h-100">
+                                <input class="form-check-input" type="checkbox" name="availability" value="{{ option }}" {% if option in availability_selected %}checked{% endif %}>
+                                <span class="form-check-label">{{ option }}</span>
+                            </label>
+                        </div>
                     {% endfor %}
-                </select>
+                </div>
             </div>
             <div class="col-12">
                 <label class="form-label" for="club_interest">Club interest</label>
-                <select name="club_interest" id="club_interest" class="form-select" multiple size="8">
+                <div class="row row-cols-1 row-cols-md-3 g-2">
                     {% for value, label in club_choices %}
-                        <option value="{{ value }}" {% if value in profile.club_interest %}selected{% endif %}>{{ label }}</option>
+                        <div class="col">
+                            <label class="form-check border rounded p-2 h-100">
+                                <input class="form-check-input" type="checkbox" name="club_interest" value="{{ value }}" {% if value in club_interest_selected %}checked{% endif %}>
+                                <span class="form-check-label">{{ label }}</span>
+                            </label>
+                        </div>
                     {% endfor %}
-                </select>
-                <div class="form-text">Choose any clubs that match your goals.</div>
+                </div>
+                <div class="form-text">Choose any clubs that match your interests.</div>
             </div>
         </div>
 

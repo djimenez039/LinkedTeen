@@ -5,8 +5,14 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <span class="section-tag">Opportunities</span>
-            <h1 class="section-title mb-0">Opportunities that fit your goals.</h1>
+            <h1 class="section-title mb-0">Opportunities that fit your goals and interests.</h1>
         </div>
+    </div>
+    <form method="get" class="input-group mb-4"><input name="q" value="{{ query }}" class="form-control" placeholder="Search opportunities"><button class="btn btn-primary">Search</button></form>
+    <div class="value-card mb-4">
+        <h2 class="h4">Community feed</h2>
+        {% if user.is_authenticated %}<form method="post" action="{% url 'create_opportunity_post' %}">{% csrf_token %}<textarea name="body" rows="2" class="form-control mb-2" placeholder="Share an opportunity, event, or resource..."></textarea><button class="btn btn-primary">Share update</button></form>{% else %}<p><a href="{% url 'accounts:login' %}?next={% url 'opportunities' %}">Log in</a> to share an update.</p>{% endif %}
+        {% for post in posts %}<article class="border-top py-3 mt-3"><strong>{{ post.author.get_full_name|default:post.author.username }}</strong><small class="text-muted ms-2">{{ post.created_at|date:'M j, Y g:i A' }}</small><p class="mb-0 mt-2">{{ post.body }}</p></article>{% empty %}<p class="mt-3 mb-0">No updates yet. Be the first person to share something.</p>{% endfor %}
     </div>
 
     <div class="row g-4">

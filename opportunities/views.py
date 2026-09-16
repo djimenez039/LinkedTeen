@@ -1,23 +1,25 @@
-from django.shortcuts import render
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect, render
+
+from .models import Opportunity, OpportunityPost
 
 
 def opportunities_index(request):
-    opportunities = [
-        {
-            'title': 'STEM Leadership Summit',
-            'category': 'Leadership',
-            'description': 'A leadership and networking event for students exploring engineering, technology, and project leadership.',
-            'skills_needed': 'Public speaking, teamwork, curiosity',
-            'who_should_apply': 'Students interested in STEM and leadership.',
-            'time_commitment': 'One weekend event',
-        },
-        {
-            'title': 'Accessibility App Challenge',
-            'category': 'Hackathon',
-            'description': 'Students build an app or prototype focused on a real social problem.',
-            'skills_needed': 'Python, design, product thinking, teamwork',
-            'who_should_apply': 'Students passionate about technology and impact.',
-            'time_commitment': '2-3 weeks',
-        },
-    ]
-    return render(request, 'opportunities/opportunities.html', {'opportunities': opportunities})
+    query = request.GET.get('q', '').strip()
+    opportunities = Opportunity.objects.all()
+    if query:
+        opportunities = opportunities.filter(title__icontains=query) | opportunities.filter(description__icontains=query)
+    return render(request, 'opportunities/opportunities.html', {
+        'opportunities': opportunities,
+        'posts': OpportunityPost.objects.select_related('author')[:30],
+        'query': query,
+    })
+
+
+@login_required
+def create_post(request):
+    if request.method == 'POST' and request.POST.get('body', '').strip():
+        OpportunityPost.objects.create(author=request.user, body=request.POST['body'].strip())
+        messages.success(request, 'Your opportunity update was shared.')
+    return redirect('opportunities')

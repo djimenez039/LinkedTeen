@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="mb-5">
+    <a href="{% url 'clubs' %}" class="btn btn-outline-primary mb-4">Back to clubs</a>
+    <div class="info-card">
+        <div class="d-flex justify-content-between align-items-start gap-3">
+            <div>
+                <span class="section-tag">Club details</span>
+                <h1 class="section-title">{{ club.name }}</h1>
+            </div>
+            {% if user.is_staff or club.created_by == user %}
+                <a href="{% url 'edit_club' club.id %}" class="btn btn-outline-primary">Edit club</a>
+            {% endif %}
+        </div>
+        <p>{{ club.description }}</p>
+        <div class="row g-4 mt-2">
+            <div class="col-md-6"><strong>Needs</strong><p>{{ club.needs|default:'Not provided yet.' }}</p></div>
+            <div class="col-md-6"><strong>Skills needed</strong><p>{{ club.skills_needed|default:'Not provided yet.' }}</p></div>
+            <div class="col-md-6"><strong>Availability</strong><p>{{ club.availability|default:'Not provided yet.' }}</p></div>
+            <div class="col-md-6"><strong>Time commitment</strong><p>{{ club.time_commitment|default:'Not provided yet.' }}</p></div>
+            <div class="col-md-6"><strong>President(s)</strong><p>{{ club.presidents|default:'Student leadership team' }}</p></div>
+            <div class="col-md-6"><strong>Club sponsor</strong><p>{{ club.sponsor|default:'Not provided yet.' }}</p></div>
+        </div>
+        {% if user.is_authenticated %}
+            {% if application %}
+                <button class="btn btn-success" disabled>Join request submitted</button>
+            {% else %}
+                <form method="post" action="{% url 'join_club' club.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary">Join this club</button>
+                </form>
+            {% endif %}
+        {% else %}
+            <a class="btn btn-primary" href="{% url 'accounts:login' %}?next={% url 'club_detail' club.id %}">Log in to join</a>
+        {% endif %}
+    </div>
+    <div class="value-card mt-4">
+        <h2 class="h4">Club group</h2>
+        <p>Share updates, questions, and plans with members of this club.</p>
+        {% if user.is_authenticated %}
+        <form method="post" action="{% url 'create_club_post' club.id %}" class="mb-4">
+            {% csrf_token %}
+            <textarea name="body" rows="3" class="form-control mb-2" placeholder="Write an update..."></textarea>
+            <button class="btn btn-primary">Post to group</button>
+        </form>
+        {% endif %}
+        {% for post in posts %}<article class="border-top py-3"><strong>{{ post.author.username }}</strong><small class="text-muted ms-2">{{ post.created_at|date:'M j, Y g:i A' }}</small><p class="mb-0 mt-2">{{ post.body }}</p></article>{% empty %}<p class="mb-0">No group posts yet.</p>{% endfor %}
+    </div>
+</section>
+{% endblock %}

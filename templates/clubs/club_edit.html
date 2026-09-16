@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5" style="max-width: 900px;">
+    <span class="section-tag">Manage club</span>
+    <h1 class="section-title">Edit {{ club.name }}</h1>
+    <form method="post" class="bg-white p-4 rounded shadow-sm">
+        {% csrf_token %}
+        <label class="form-label">Description</label>
+        <textarea name="description" rows="4" class="form-control mb-3">{{ club.description }}</textarea>
+        <div class="row g-3">
+            <div class="col-md-6"><label class="form-label">Needs</label><textarea name="needs" rows="3" class="form-control">{{ club.needs }}</textarea></div>
+            <div class="col-md-6"><label class="form-label">Skills needed</label><textarea name="skills_needed" rows="3" class="form-control">{{ club.skills_needed }}</textarea></div>
+            <div class="col-md-6"><label class="form-label">Availability</label><input name="availability" value="{{ club.availability }}" class="form-control"></div>
+            <div class="col-md-6"><label class="form-label">Time commitment</label><input name="time_commitment" value="{{ club.time_commitment }}" class="form-control"></div>
+            <div class="col-md-6"><label class="form-label">President(s)</label><input name="presidents" value="{{ club.presidents }}" class="form-control"></div>
+            <div class="col-md-6"><label class="form-label">Club sponsor</label><input name="sponsor" value="{{ club.sponsor }}" class="form-control"></div>
+            <div class="col-12"><label class="form-label">Keywords</label><input name="keywords" value="{{ club.keywords }}" class="form-control"></div>
+        </div>
+        <div class="mt-4"><button type="submit" class="btn btn-primary">Save club</button> <a href="{% url 'club_detail' club.id %}" class="btn btn-outline-primary">Cancel</a></div>
+    </form>
+</div>
+{% endblock %}

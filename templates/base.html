@@ -222,6 +222,11 @@
 <body>
     {% include 'components/navbar.html' %}
     <div class="container mt-5">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags|default:'info' }}" role="alert">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
         {% block content %}
         {% endblock %}
     </div>
