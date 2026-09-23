@@ -7,10 +7,26 @@
             <span class="section-tag">Student profile</span>
             <h1 class="section-title mb-0">{{ profile.full_name|default:user.username }}</h1>
         </div>
-        {% if user.profile_photo %}
-        <img src="{{ user.profile_photo.url }}" alt="Profile photo" class="rounded-circle" width="96" height="96" style="object-fit: cover;">
-        {% endif %}
         <div><a href="{% url 'accounts:onboarding' %}" class="btn btn-outline-primary">Edit profile</a> <a href="{% url 'accounts:settings' %}" class="btn btn-outline-primary">Settings</a></div>
+    </div>
+
+    <div class="info-card mb-4">
+        <h4>Profile photo</h4>
+        <div class="d-flex flex-column flex-sm-row align-items-sm-center gap-3">
+            {% if user.profile_photo %}
+                <img src="{{ user.profile_photo.url }}" alt="Profile photo" class="rounded-circle" width="96" height="96" style="object-fit: cover;">
+            {% else %}
+                <div class="rounded-circle bg-light border d-flex align-items-center justify-content-center text-muted" style="width: 96px; height: 96px;">No photo</div>
+            {% endif %}
+            <form method="post" enctype="multipart/form-data" class="flex-grow-1">
+                {% csrf_token %}
+                <label for="id_profile_photo" class="form-label">Add or change your photo</label>
+                {{ photo_form.profile_photo }}
+                {% if photo_form.profile_photo.errors %}<div class="text-danger small mt-1">{{ photo_form.profile_photo.errors }}</div>{% endif %}
+                <div class="form-text">JPG, PNG, or GIF; maximum 5 MB.</div>
+                <button type="submit" class="btn btn-primary mt-3">Save photo</button>
+            </form>
+        </div>
     </div>
 
     <div class="row g-4">

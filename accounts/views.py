@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 
 from clubs.constants import CLUB_CHOICES
-from .forms import CustomUserCreationForm, EmailOrUsernameAuthenticationForm
+from .forms import CustomUserCreationForm, EmailOrUsernameAuthenticationForm, ProfilePhotoForm
 from .models import StudentProfile
 
 INTEREST_OPTIONS = [
@@ -85,7 +85,12 @@ def onboarding_view(request):
 @login_required
 def profile_view(request):
     profile, _ = StudentProfile.objects.get_or_create(user=request.user)
-    return render(request, 'accounts/profile.html', {'profile': profile})
+    photo_form = ProfilePhotoForm(request.POST or None, request.FILES or None, instance=request.user)
+    if request.method == 'POST' and photo_form.is_valid():
+        photo_form.save()
+        messages.success(request, 'Your profile photo was updated.')
+        return redirect('accounts:profile')
+    return render(request, 'accounts/profile.html', {'profile': profile, 'photo_form': photo_form})
 
 
 @login_required

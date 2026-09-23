@@ -1,7 +1,10 @@
+from io import BytesIO
+
 from django.contrib.auth import get_user_model
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 from django.urls import reverse
+from PIL import Image
 
 
 class AuthFlowTests(TestCase):
@@ -51,16 +54,9 @@ class AuthFlowTests(TestCase):
         self.assertTrue(get_user_model().objects.filter(username='newuser').exists())
 
     def test_register_saves_profile_photo(self):
-        photo = SimpleUploadedFile(
-            'profile.png',
-            (
-                b'\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR'
-                b'\x00\x00\x00\x01\x00\x00\x00\x01\x08\x02\x00\x00\x00\x90wS\xde'
-                b'\x00\x00\x00\x0cIDAT\x08\xd7c\xf8\xcf\xc0\xf0\x1f\x00\x05\x00\x01\xff'
-                b'\x89\x99=\x1d\x00\x00\x00\x00IEND\xaeB`\x82'
-            ),
-            content_type='image/png',
-        )
+        image_buffer = BytesIO()
+        Image.new('RGB', (1, 1), color='white').save(image_buffer, format='PNG')
+        photo = SimpleUploadedFile('profile.png', image_buffer.getvalue(), content_type='image/png')
         response = self.client.post(reverse('accounts:register'), {
             'username': 'photouser',
             'password1': 'StrongPass123!',

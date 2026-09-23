@@ -23,6 +23,25 @@ class CustomUserCreationForm(UserCreationForm):
         return photo
 
 
+class ProfilePhotoForm(forms.ModelForm):
+    profile_photo = forms.ImageField(
+        required=False,
+        label='Profile photo',
+        help_text='Optional. JPG, PNG, or GIF up to 5 MB.',
+        widget=forms.ClearableFileInput(attrs={'accept': 'image/*', 'class': 'form-control'}),
+    )
+
+    class Meta:
+        model = get_user_model()
+        fields = ('profile_photo',)
+
+    def clean_profile_photo(self):
+        photo = self.cleaned_data.get('profile_photo')
+        if photo and photo.size > 5 * 1024 * 1024:
+            raise forms.ValidationError('Profile photo must be 5 MB or smaller.')
+        return photo
+
+
 class EmailOrUsernameAuthenticationForm(forms.Form):
     username = forms.CharField(label='Username or email')
     password = forms.CharField(widget=forms.PasswordInput)
