@@ -13,6 +13,7 @@ class CustomUser(AbstractUser):
     ]
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='student')
     is_verified = models.BooleanField(default=False)
+    profile_photo = models.ImageField(upload_to='profile_photos/%Y/%m/', blank=True)
 
     def __str__(self):
         return self.username

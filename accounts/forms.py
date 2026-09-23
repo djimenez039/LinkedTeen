@@ -1,14 +1,26 @@
-from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from django.contrib.auth import authenticate, get_user_model
+from django.contrib.auth.forms import UserCreationForm
 
 
 class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(required=False)
+    profile_photo = forms.ImageField(
+        required=False,
+        label='Profile photo',
+        help_text='Optional. JPG, PNG, or GIF up to 5 MB.',
+        widget=forms.ClearableFileInput(attrs={'accept': 'image/*'}),
+    )
 
     class Meta:
         model = get_user_model()
-        fields = ('username', 'email')
+        fields = ('username', 'email', 'profile_photo')
+
+    def clean_profile_photo(self):
+        photo = self.cleaned_data.get('profile_photo')
+        if photo and photo.size > 5 * 1024 * 1024:
+            raise forms.ValidationError('Profile photo must be 5 MB or smaller.')
+        return photo
 
 
 class EmailOrUsernameAuthenticationForm(forms.Form):

@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 from django.urls import reverse
 
@@ -48,6 +49,28 @@ class AuthFlowTests(TestCase):
         })
         self.assertRedirects(response, reverse('accounts:onboarding'))
         self.assertTrue(get_user_model().objects.filter(username='newuser').exists())
+
+    def test_register_saves_profile_photo(self):
+        photo = SimpleUploadedFile(
+            'profile.png',
+            (
+                b'\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR'
+                b'\x00\x00\x00\x01\x00\x00\x00\x01\x08\x02\x00\x00\x00\x90wS\xde'
+                b'\x00\x00\x00\x0cIDAT\x08\xd7c\xf8\xcf\xc0\xf0\x1f\x00\x05\x00\x01\xff'
+                b'\x89\x99=\x1d\x00\x00\x00\x00IEND\xaeB`\x82'
+            ),
+            content_type='image/png',
+        )
+        response = self.client.post(reverse('accounts:register'), {
+            'username': 'photouser',
+            'password1': 'StrongPass123!',
+            'password2': 'StrongPass123!',
+            'profile_photo': photo,
+        })
+
+        self.assertRedirects(response, reverse('accounts:onboarding'))
+        user = get_user_model().objects.get(username='photouser')
+        self.assertTrue(user.profile_photo.name.startswith('profile_photos/'))
 
     def test_student_onboarding_page_loads_for_logged_in_user(self):
         user = get_user_model().objects.create_user(username='profileuser', password='StrongPass123!')
