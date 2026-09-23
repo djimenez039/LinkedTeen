@@ -164,6 +164,8 @@ STATIC_URL = '/static/'
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Ensure static directory exists in local and Railway deployments.
 STATIC_ROOT.mkdir(exist_ok=True, parents=True)

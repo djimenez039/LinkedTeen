@@ -7,6 +7,9 @@
             <span class="section-tag">Student profile</span>
             <h1 class="section-title mb-0">{{ profile.full_name|default:user.username }}</h1>
         </div>
+        {% if user.profile_photo %}
+        <img src="{{ user.profile_photo.url }}" alt="Profile photo" class="rounded-circle" width="96" height="96" style="object-fit: cover;">
+        {% endif %}
         <div><a href="{% url 'accounts:onboarding' %}" class="btn btn-outline-primary">Edit profile</a> <a href="{% url 'accounts:settings' %}" class="btn btn-outline-primary">Settings</a></div>
     </div>
 

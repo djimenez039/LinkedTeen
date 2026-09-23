@@ -41,7 +41,7 @@ def login_view(request):
 def register_view(request):
     if request.user.is_authenticated:
         return redirect('dashboard')
-    form = CustomUserCreationForm(request.POST or None)
+    form = CustomUserCreationForm(request.POST or None, request.FILES or None)
     if request.method == 'POST' and form.is_valid():
         user = form.save()
         login(request, user)
