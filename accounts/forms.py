@@ -1,6 +1,8 @@
 from django import forms
 from django.contrib.auth import authenticate, get_user_model
+from django.contrib.auth import password_validation
 from django.contrib.auth.forms import UserCreationForm
+from django.core.exceptions import ValidationError
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -15,6 +17,25 @@ class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = get_user_model()
         fields = ('username', 'email', 'profile_photo')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields.pop('password2', None)
+        for field in self.fields.values():
+            field.widget.attrs.setdefault('class', 'form-control')
+        self.fields['password1'].widget.attrs.update({
+            'autocomplete': 'new-password',
+            'aria-describedby': 'id_password1_helptext',
+        })
+
+    def _post_clean(self):
+        super()._post_clean()
+        password = self.cleaned_data.get('password1')
+        if password:
+            try:
+                password_validation.validate_password(password, self.instance)
+            except ValidationError as error:
+                self.add_error('password1', error)
 
     def clean_profile_photo(self):
         photo = self.cleaned_data.get('profile_photo')

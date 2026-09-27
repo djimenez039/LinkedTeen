@@ -5,9 +5,48 @@
 	<h1 class="section-title text-center">Create an account</h1>
 	<form method="post" enctype="multipart/form-data" class="bg-white p-4 rounded shadow-sm">
 		{% csrf_token %}
-		{{ form.as_p }}
+		{{ form.non_field_errors }}
+		{% for field in form %}
+		<div class="mb-3">
+			<label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+			{% if field.name == 'password1' %}
+			<div class="input-group">
+				{{ field }}
+				<button type="button" class="btn btn-outline-secondary" data-password-toggle
+					aria-label="Show password" aria-controls="{{ field.id_for_label }}" aria-pressed="false">
+					<svg data-icon-eye aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+						<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z" />
+						<circle cx="12" cy="12" r="3" />
+					</svg>
+					<svg data-icon-eye-off aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" hidden>
+						<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z" />
+						<circle cx="12" cy="12" r="3" />
+						<path d="m3 3 18 18" />
+					</svg>
+			</button>
+			</div>
+			{% else %}
+			{{ field }}
+			{% endif %}
+			{% if field.help_text %}<div class="form-text" id="{{ field.id_for_label }}_helptext">{{ field.help_text|safe }}</div>{% endif %}
+			{% for error in field.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+		</div>
+		{% endfor %}
 		<button type="submit" class="btn btn-primary w-100">Register</button>
 	</form>
 	<p class="text-center mt-3">Already have an account? <a href="{% url 'accounts:login' %}">Log in</a></p>
 </div>
+<script>
+	document.querySelectorAll('[data-password-toggle]').forEach((button) => {
+		button.addEventListener('click', () => {
+			const password = document.getElementById(button.getAttribute('aria-controls'));
+			const isShowing = password.type === 'password';
+			password.type = isShowing ? 'text' : 'password';
+			button.setAttribute('aria-pressed', String(isShowing));
+			button.setAttribute('aria-label', isShowing ? 'Hide password' : 'Show password');
+			button.querySelector('[data-icon-eye]').hidden = isShowing;
+			button.querySelector('[data-icon-eye-off]').hidden = !isShowing;
+		});
+	});
+</script>
 {% endblock %}
