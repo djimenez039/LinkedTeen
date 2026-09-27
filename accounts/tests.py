@@ -17,6 +17,8 @@ class AuthFlowTests(TestCase):
         response = self.client.get(reverse('accounts:register'))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Create an account')
+        self.assertContains(response, 'data-password-toggle')
+        self.assertNotContains(response, 'Password confirmation')
 
     def test_login_redirects_to_dashboard(self):
         user = get_user_model().objects.create_user(username='demo', password='StrongPass123!')
@@ -52,6 +54,16 @@ class AuthFlowTests(TestCase):
         })
         self.assertRedirects(response, reverse('accounts:onboarding'))
         self.assertTrue(get_user_model().objects.filter(username='newuser').exists())
+
+    def test_register_succeeds_without_password_confirmation(self):
+        response = self.client.post(reverse('accounts:register'), {
+            'username': 'withoutconfirmation',
+            'password1': 'StrongPass123!',
+        })
+
+        self.assertRedirects(response, reverse('accounts:onboarding'))
+        user = get_user_model().objects.get(username='withoutconfirmation')
+        self.assertTrue(user.check_password('StrongPass123!'))
 
     def test_register_saves_profile_photo(self):
         image_buffer = BytesIO()
