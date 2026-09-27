@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 
 from pathlib import Path
 import os
+from django.core.exceptions import ImproperlyConfigured
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -107,7 +108,17 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
-if os.getenv("PGHOST"):
+pg_required_variables = ("PGDATABASE", "PGUSER", "PGPASSWORD", "PGHOST", "PGPORT")
+missing_pg_variables = [name for name in pg_required_variables if not os.getenv(name)]
+is_railway = bool(os.getenv("RAILWAY_ENVIRONMENT_NAME") or os.getenv("RAILWAY_SERVICE_ID"))
+
+if is_railway and missing_pg_variables:
+    raise ImproperlyConfigured(
+        "Railway deployments require PostgreSQL. Missing environment variable(s): "
+        + ", ".join(missing_pg_variables)
+    )
+
+if not missing_pg_variables:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
