@@ -217,11 +217,12 @@
             padding-bottom: 110px;
         }
     </style>
+    {% block page_styles %}{% endblock %}
 </head>
 
 <body>
     {% include 'components/navbar.html' %}
-    <div class="container mt-5">
+    <div class="{% if request.path == '/' %}home-shell{% else %}container mt-5{% endif %}">
         {% if messages %}
             {% for message in messages %}
                 <div class="alert alert-{{ message.tags|default:'info' }}" role="alert">{{ message }}</div>
