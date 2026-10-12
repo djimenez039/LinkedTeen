@@ -23,8 +23,8 @@
             <div class="col-md-6"><strong>Club sponsor</strong><p>{{ club.sponsor|default:'Not provided yet.' }}</p></div>
         </div>
         {% if user.is_authenticated %}
-            {% if application %}
-                <button class="btn btn-success" disabled>Join request submitted</button>
+            {% if is_member %}
+                <button class="btn btn-success" disabled>You're a member</button>
             {% else %}
                 <form method="post" action="{% url 'join_club' club.id %}">
                     {% csrf_token %}
@@ -35,17 +35,41 @@
             <a class="btn btn-primary" href="{% url 'accounts:login' %}?next={% url 'club_detail' club.id %}">Log in to join</a>
         {% endif %}
     </div>
-    <div class="value-card mt-4">
-        <h2 class="h4">Club group</h2>
+
+    <section class="value-card mt-4" aria-labelledby="announcements-title">
+        <h2 class="h4" id="announcements-title">Announcements</h2>
+        <p>Club announcements are public.</p>
+        {% if can_manage_announcements %}
+        <form method="post" action="{% url 'create_club_announcement' club.id %}" class="mb-4">
+            {% csrf_token %}
+            <label class="form-label" for="announcement-title">New announcement</label>
+            <input class="form-control mb-2" id="announcement-title" name="title" maxlength="160" required placeholder="Announcement title">
+            <textarea class="form-control mb-2" name="body" rows="3" required placeholder="Write an announcement..."></textarea>
+            <button class="btn btn-primary" type="submit">Publish announcement</button>
+        </form>
+        {% endif %}
+        {% for announcement in announcements %}
+        <article class="border-top py-3">
+            <h3 class="h6 mb-1">{{ announcement.title }}</h3>
+            <small class="text-muted">{{ announcement.author.username }} · {{ announcement.created_at|date:'M j, Y g:i A' }}</small>
+            <p class="mb-0 mt-2">{{ announcement.body }}</p>
+        </article>
+        {% empty %}
+        <p class="mb-0">No announcements yet.</p>
+        {% endfor %}
+    </section>
+
+    {% if is_member %}
+    <section class="value-card mt-4" aria-labelledby="club-group-title">
+        <h2 class="h4" id="club-group-title">Club group</h2>
         <p>Share updates, questions, and plans with members of this club.</p>
-        {% if user.is_authenticated %}
         <form method="post" action="{% url 'create_club_post' club.id %}" class="mb-4">
             {% csrf_token %}
             <textarea name="body" rows="3" class="form-control mb-2" placeholder="Write an update..."></textarea>
             <button class="btn btn-primary">Post to group</button>
         </form>
-        {% endif %}
         {% for post in posts %}<article class="border-top py-3"><strong>{{ post.author.username }}</strong><small class="text-muted ms-2">{{ post.created_at|date:'M j, Y g:i A' }}</small><p class="mb-0 mt-2">{{ post.body }}</p></article>{% empty %}<p class="mb-0">No group posts yet.</p>{% endfor %}
-    </div>
+    </section>
+    {% endif %}
 </section>
 {% endblock %}

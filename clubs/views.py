@@ -1,10 +1,24 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404, redirect, render
 
 from .constants import CLUB_CHOICES, PRESIDENT_ROSTER, get_club_keywords
-from .models import Club
-from applications.models import ClubApplication
+from .models import Club, ClubAnnouncement, ClubMembership
+
+
+def _get_membership(club, user):
+    if not user.is_authenticated:
+        return None
+    return ClubMembership.objects.filter(club=club, student=user).first()
+
+
+def _can_manage_announcements(club, user, membership):
+    return user.is_authenticated and (
+        user.is_staff
+        or club.created_by_id == user.pk
+        or (membership and membership.role in {'leader', 'sponsor'})
+    )
 
 
 def _get_or_create_club(name):
@@ -50,15 +64,24 @@ def club_detail(request, club_id):
     club = get_object_or_404(Club, pk=club_id)
     if not club.presidents and club.name in dict(CLUB_CHOICES):
         club = _get_or_create_club(club.name)
-    application = None
-    if request.user.is_authenticated:
-        application = ClubApplication.objects.filter(club=club, student=request.user).first()
-    return render(request, 'clubs/club_detail.html', {'club': club, 'application': application, 'posts': club.posts.select_related('author')[:30]})
+    membership = _get_membership(club, request.user)
+    is_member = membership is not None
+    return render(request, 'clubs/club_detail.html', {
+        'club': club,
+        'membership': membership,
+        'is_member': is_member,
+        'can_manage_announcements': _can_manage_announcements(club, request.user, membership),
+        'announcements': club.announcements.select_related('author')[:30],
+        'posts': club.posts.select_related('author')[:30] if is_member else [],
+    })
 
 
 @login_required
 def create_club_post(request, club_id):
     club = get_object_or_404(Club, pk=club_id)
+    if _get_membership(club, request.user) is None:
+        messages.error(request, 'Join this club before posting to its group.')
+        return redirect('club_detail', club_id=club.id)
     if request.method == 'POST' and request.POST.get('body', '').strip():
         club.posts.create(author=request.user, body=request.POST['body'].strip())
         messages.success(request, 'Your post was added to the club group.')
@@ -69,11 +92,28 @@ def create_club_post(request, club_id):
 def join_club(request, club_id):
     club = get_object_or_404(Club, pk=club_id)
     if request.method == 'POST':
-        _, created = ClubApplication.objects.get_or_create(club=club, student=request.user)
+        _, created = ClubMembership.objects.get_or_create(club=club, student=request.user)
         if created:
-            messages.success(request, f'Your request to join {club.name} was submitted.')
+            messages.success(request, f'You are now a member of {club.name}.')
         else:
-            messages.info(request, f'You already requested to join {club.name}.')
+            messages.info(request, f'You are already a member of {club.name}.')
+    return redirect('club_detail', club_id=club.id)
+
+
+@login_required
+def create_club_announcement(request, club_id):
+    club = get_object_or_404(Club, pk=club_id)
+    membership = _get_membership(club, request.user)
+    if not _can_manage_announcements(club, request.user, membership):
+        raise PermissionDenied
+    if request.method == 'POST':
+        title = request.POST.get('title', '').strip()
+        body = request.POST.get('body', '').strip()
+        if title and body:
+            ClubAnnouncement.objects.create(club=club, author=request.user, title=title, body=body)
+            messages.success(request, 'Your announcement was published.')
+        else:
+            messages.error(request, 'Add both a title and announcement text.')
     return redirect('club_detail', club_id=club.id)
 
 
