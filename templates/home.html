@@ -1,214 +1,371 @@
 {% extends 'base.html' %}
 
+{% block page_styles %}
+<style>
+    body:has(.home-page) {
+        background: #f5f8ff;
+    }
+
+    .home-shell {
+        width: 100%;
+    }
+
+    .home-page {
+        color: #1b2b4a;
+    }
+
+    .home-container {
+        width: min(100% - 2rem, 1160px);
+        margin-inline: auto;
+    }
+
+    .home-hero {
+        display: block;
+        min-height: 0;
+        padding: 36px 0 48px;
+        background: linear-gradient(115deg, #eef4ff 0%, #fff 58%, #fff9e8 100%);
+        border-bottom: 1px solid #e4ebf7;
+    }
+
+    .home-hero-grid {
+        display: grid;
+        gap: 32px;
+        align-items: center;
+    }
+
+    .hero-copy {
+        max-width: 570px;
+    }
+
+    .home-page .section-tag {
+        margin-bottom: 12px;
+        padding: 7px 11px;
+        border-radius: 6px;
+        background: #fff0b8;
+        color: #553e00;
+        font-size: 0.76rem;
+        letter-spacing: 0;
+    }
+
+    .hero-copy h1 {
+        max-width: 590px;
+        margin: 0 0 16px;
+        color: #204fb9;
+        font-family: 'Poppins', sans-serif;
+        font-size: clamp(2.35rem, 5vw, 3.75rem);
+        font-weight: 700;
+        line-height: 1.12;
+    }
+
+    .hero-copy p {
+        max-width: 510px;
+        margin-bottom: 22px;
+        color: #44536c;
+        font-size: 1.1rem;
+        line-height: 1.6;
+    }
+
+    .hero-actions {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        flex-wrap: wrap;
+    }
+
+    .home-page .btn-primary {
+        border-color: #2458c5;
+        background: #2458c5;
+        font-weight: 700;
+    }
+
+    .hero-actions .btn {
+        min-height: 48px;
+        padding: 12px 18px;
+    }
+
+    .hero-actions a:not(.btn) {
+        color: #204fb9;
+        font-weight: 700;
+        text-underline-offset: 4px;
+    }
+
+    .club-previews {
+        padding: 20px;
+        border: 1px solid #e0e7f2;
+        border-radius: 10px;
+        background: #fff;
+        box-shadow: 0 12px 28px rgba(29, 54, 99, 0.08);
+    }
+
+    .club-previews h2,
+    .how-section h2,
+    .final-cta h2 {
+        margin: 0;
+        color: #1b2b4a;
+        font-family: 'Poppins', sans-serif;
+        font-size: 1.45rem;
+        font-weight: 700;
+    }
+
+    .club-previews-intro {
+        margin: 6px 0 14px;
+        color: #5f6983;
+        font-size: 0.94rem;
+    }
+
+    .club-preview-list {
+        display: grid;
+        gap: 9px;
+    }
+
+    .club-preview {
+        display: flex;
+        min-height: 64px;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 12px 14px;
+        border: 1px solid #e5ebf5;
+        border-radius: 8px;
+        color: #1b2b4a;
+        text-decoration: none;
+        transition: border-color 160ms ease, transform 160ms ease, box-shadow 160ms ease;
+    }
+
+    .club-preview:hover {
+        transform: translateY(-2px);
+        border-color: #9bb5e9;
+        box-shadow: 0 7px 16px rgba(29, 54, 99, 0.08);
+    }
+
+    .club-preview:focus-visible,
+    .home-page a:focus-visible,
+    .navbar a:focus-visible {
+        outline: 3px solid #c18800;
+        outline-offset: 3px;
+    }
+
+    .club-preview strong {
+        font-size: 0.98rem;
+        line-height: 1.35;
+    }
+
+    .club-preview-copy {
+        min-width: 0;
+    }
+
+    .club-preview-copy p {
+        margin: 4px 0 0;
+        color: #5f6983;
+        font-size: 0.87rem;
+        line-height: 1.4;
+    }
+
+    .club-preview span {
+        flex: 0 0 auto;
+        color: #2458c5;
+        font-size: 0.87rem;
+        font-weight: 700;
+    }
+
+    .missing-club-details {
+        margin: 12px 0 0;
+        color: #5f6983;
+        font-size: 0.85rem;
+        line-height: 1.5;
+    }
+
+    .how-section {
+        padding: 44px 0 46px;
+    }
+
+    .how-section > .home-container > p {
+        margin: 7px 0 20px;
+        color: #5f6983;
+    }
+
+    .steps-grid {
+        display: grid;
+        gap: 12px;
+        grid-template-columns: 1fr;
+    }
+
+    .how-step {
+        display: grid;
+        grid-template-columns: 42px 1fr;
+        gap: 12px;
+        align-items: start;
+        padding: 16px;
+        border: 1px solid #e0e7f2;
+        border-radius: 8px;
+        background: #fff;
+    }
+
+    .step-number {
+        display: grid;
+        width: 38px;
+        height: 38px;
+        place-items: center;
+        border-radius: 8px;
+        background: #eaf0ff;
+        color: #204fb9;
+        font-weight: 700;
+    }
+
+    .how-step h3 {
+        margin: 1px 0 4px;
+        color: #1b2b4a;
+        font-size: 1rem;
+        font-weight: 700;
+    }
+
+    .how-step p {
+        margin: 0;
+        color: #5f6983;
+        font-size: 0.93rem;
+        line-height: 1.5;
+    }
+
+    .final-cta {
+        padding: 27px 0;
+        background: #fff0b8;
+    }
+
+    .final-cta-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+
+    .final-cta p {
+        margin: 5px 0 0;
+        color: #514728;
+    }
+
+    .home-meta {
+        display: flex;
+        gap: 8px 20px;
+        flex-wrap: wrap;
+        padding: 18px 0 20px;
+        color: #5f6983;
+        font-size: 0.85rem;
+    }
+
+    .announcement-banner[hidden] {
+        display: none;
+    }
+
+    @media (min-width: 800px) {
+        .home-container {
+            width: min(100% - 3rem, 1160px);
+        }
+
+        .home-hero {
+            padding: 42px 0 50px;
+        }
+
+        .home-hero-grid {
+            grid-template-columns: minmax(0, 1fr) minmax(360px, 0.88fr);
+            gap: 48px;
+        }
+
+        .steps-grid {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .club-preview {
+            transition: none;
+        }
+
+        .club-preview:hover {
+            transform: none;
+        }
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-
-<section class="home-hero">
-    <div class="container text-center">
-        <span class="section-tag">A student-first connection platform</span>
-        <h1 class="display-1 mb-4">Find your people. Find where you fit.</h1>
-        <p class="lead mx-auto mb-4" style="max-width: 760px;">
-            LinkedTeens connects your interests, skills, and goals to people, clubs, projects, and opportunities that need what you bring.
-        </p>
-        <div class="hero-buttons d-flex justify-content-center gap-3 flex-wrap">
-            <a href="{% url 'accounts:register' %}" class="btn btn-primary btn-lg shadow-sm">
-                Build your profile
-            </a>
-            <a href="#how-it-works" class="btn btn-outline-primary btn-lg shadow-sm">
-                See how it works
-            </a>
-        </div>
-    </div>
-</section>
-
-<section id="about" class="landing-section">
-    <div class="container">
-        <div class="row align-items-center g-5">
-            <div class="col-lg-6">
-                <span class="section-tag">About Us</span>
-                <h2 class="section-title">We’re built for students figuring out what’s next.</h2>
-                <p>
-                    LinkedTeens is a student-first platform made for high schoolers who want more than just school — they want
-                    direction, connection, and opportunity.
-                </p>
-                <p>
-                    We help teens connect with mentors, clubs, organizations, events, and resources that match their goals,
-                    interests, and future plans.
-                </p>
-            <ul class="feature-list">
-                    <li>Explore opportunities beyond the classroom</li>
-                    <li>Connect with people who can guide your journey</li>
-                    <li>Build confidence while figuring out your next step</li>
-                </ul>
+<aside class="announcement-banner" hidden aria-hidden="true"></aside>
+<main class="home-page" id="main-content">
+    <section class="home-hero" aria-labelledby="home-title">
+        <div class="home-container home-hero-grid">
+            <div class="hero-copy">
+                <span class="section-tag">BUILT BY STUDENTS, FOR STUDENTS</span>
+                <h1 id="home-title">Find PVHS clubs that fit your interests.</h1>
+                <p>Explore clubs, see what they do, and find your next way to get involved.</p>
+                <div class="hero-actions">
+                    <a href="{% url 'accounts:register' %}" class="btn btn-primary btn-lg">Create my free account</a>
+                    <a href="#clubs">Explore clubs</a>
+                </div>
             </div>
-            <div class="col-lg-6">
-                <div class="info-card">
-                    <div class="stat-box">
-                        <strong>100%</strong>
-                        <span>Made with student growth in mind</span>
+
+            <section class="club-previews" id="clubs" aria-labelledby="clubs-title">
+                <h2 id="clubs-title">Explore PVHS clubs</h2>
+                <p class="club-previews-intro">A few clubs students can explore.</p>
+                <div class="club-preview-list">
+                    {% for club in preview_clubs %}
+                    <a class="club-preview" href="{{ club.url }}">
+                        <div class="club-preview-copy">
+                            <strong>{{ club.name }}</strong>
+                            <p>{% if club.description %}{{ club.description }}{% else %}Description not published yet.{% endif %}</p>
+                        </div>
+                        <span>View listing <span aria-hidden="true">&rarr;</span></span>
+                    </a>
+                    {% endfor %}
+                </div>
+                <p class="missing-club-details">Only published club details are shown here. Open a listing for more information.</p>
+            </section>
+        </div>
+    </section>
+
+    <section class="how-section" id="how-it-works" aria-labelledby="how-title">
+        <div class="home-container">
+            <h2 id="how-title">How it works</h2>
+            <p>Start with a profile, browse the catalog, then request to join a club.</p>
+            <div class="steps-grid">
+                <article class="how-step">
+                    <span class="step-number" aria-hidden="true">1</span>
+                    <div>
+                        <h3>Create your account</h3>
+                        <p>Set up your student account and share your interests.</p>
                     </div>
-                    <div class="stat-box">
-                        <strong>High school</strong>
-                        <span>Focused on real-world opportunities</span>
+                </article>
+                <article class="how-step">
+                    <span class="step-number" aria-hidden="true">2</span>
+                    <div>
+                        <h3>Explore the catalog</h3>
+                        <p>Browse clubs and open their listings to learn more.</p>
                     </div>
-                    <div class="stat-box">
-                        <strong>Community</strong>
-                        <span>Support, insight, and encouragement</span>
+                </article>
+                <article class="how-step">
+                    <span class="step-number" aria-hidden="true">3</span>
+                    <div>
+                        <h3>Send a join request</h3>
+                        <p>Sign in and request to join a club you like.</p>
                     </div>
-                </div>
+                </article>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<section id="why-us" class="landing-section alt-section">
-    <div class="container">
-        <div class="text-center mb-5">
-            <span class="section-tag">Why Us</span>
-            <h2 class="section-title">Because figuring out your future shouldn’t feel overwhelming.</h2>
+    <section class="final-cta" aria-labelledby="final-cta-title">
+        <div class="home-container final-cta-row">
+            <div>
+                <h2 id="final-cta-title">Find your next club.</h2>
+                <p>Make an account and start exploring.</p>
+            </div>
+            <a href="{% url 'accounts:register' %}" class="btn btn-primary btn-lg">Create my free account</a>
         </div>
-        <div class="row g-4">
-            <div class="col-md-4">
-                <div class="value-card h-100">
-                    <div class="icon-circle">01</div>
-                    <h4>Real support</h4>
-                    <p>Find mentors and peers who understand what high school life is really like.</p>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="value-card h-100">
-                    <div class="icon-circle">02</div>
-                    <h4>Helpful discovery</h4>
-                    <p>Explore leadership programs, internships, camps, clubs, and student opportunities.</p>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="value-card h-100">
-                    <div class="icon-circle">03</div>
-                    <h4>Confidence building</h4>
-                    <p>Learn about your options and take steps toward goals that actually match your interests.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+    </section>
 
-<section id="resources" class="landing-section">
-    <div class="container">
-        <div class="text-center mb-5">
-            <span class="section-tag">Resources</span>
-            <h2 class="section-title">Helpful tools for students exploring their future.</h2>
-        </div>
-        <div class="row g-4">
-            <div class="col-md-6 col-lg-4">
-                <a href="https://bigfuture.collegeboard.org/" target="_blank" rel="noopener" class="resource-card">
-                    <span class="resource-title">BigFuture</span>
-                    <p>College planning, career exploration, and scholarships.</p>
-                </a>
-            </div>
-            <div class="col-md-6 col-lg-4">
-                <a href="https://www.khanacademy.org/" target="_blank" rel="noopener" class="resource-card">
-                    <span class="resource-title">Khan Academy</span>
-                    <p>Free learning, prep, and academic support.</p>
-                </a>
-            </div>
-            <div class="col-md-6 col-lg-4">
-                <a href="https://careeronestop.org/" target="_blank" rel="noopener" class="resource-card">
-                    <span class="resource-title">CareerOneStop</span>
-                    <p>Career research, job info, and skill-building resources.</p>
-                </a>
-            </div>
-            <div class="col-md-6 col-lg-4">
-                <a href="https://www.fastweb.com/" target="_blank" rel="noopener" class="resource-card">
-                    <span class="resource-title">Fastweb</span>
-                    <p>Scholarship search and financial aid opportunities.</p>
-                </a>
-            </div>
-            <div class="col-md-6 col-lg-4">
-                <a href="https://www.collegexpress.com/" target="_blank" rel="noopener" class="resource-card">
-                    <span class="resource-title">CollegeExpress</span>
-                    <p>College search tips and student-focused guidance.</p>
-                </a>
-            </div>
-            <div class="col-md-6 col-lg-4">
-                <a href="https://nces.ed.gov/collegenavigator/" target="_blank" rel="noopener" class="resource-card">
-                    <span class="resource-title">College Navigator</span>
-                    <p>Compare schools, majors, and academic programs.</p>
-                </a>
-            </div>
-        </div>
+    <div class="home-container home-meta" aria-label="Site information">
+        <span>Privacy page: not available yet</span>
+        <span>Contact information: not published yet</span>
     </div>
-</section>
-
-<section id="socials" class="landing-section alt-section">
-    <div class="container">
-        <div class="text-center mb-5">
-            <span class="section-tag">Socials</span>
-            <h2 class="section-title">Stay connected with the LinkedTeens community.</h2>
-        </div>
-        <div class="row g-4 justify-content-center">
-            <div class="col-sm-6 col-md-3">
-                <a href="https://instagram.com" target="_blank" rel="noopener" class="social-card">Instagram</a>
-            </div>
-            <div class="col-sm-6 col-md-3">
-                <a href="https://x.com" target="_blank" rel="noopener" class="social-card">X / Twitter</a>
-            </div>
-            <div class="col-sm-6 col-md-3">
-                <a href="https://youtube.com" target="_blank" rel="noopener" class="social-card">YouTube</a>
-            </div>
-            <div class="col-sm-6 col-md-3">
-                <a href="https://linkedin.com" target="_blank" rel="noopener" class="social-card">LinkedIn</a>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section id="how-it-works" class="landing-section">
-    <div class="container">
-        <div class="text-center mb-5">
-            <span class="section-tag">How it works</span>
-            <h2 class="section-title">Take one small step toward your future.</h2>
-        </div>
-        <div class="row g-4">
-            <div class="col-md-4">
-                <div class="step-card">
-                    <span class="step-number">1</span>
-                    <h4>Create your profile</h4>
-                    <p>Tell us what you enjoy, what you’re curious about, and what kind of opportunities you want.</p>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="step-card">
-                    <span class="step-number">2</span>
-                    <h4>Explore opportunities</h4>
-                    <p>Discover clubs, events, mentors, and programs that match your goals and interests.</p>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="step-card">
-                    <span class="step-number">3</span>
-                    <h4>Grow your network</h4>
-                    <p>Build real connections that help you learn, prepare, and move forward with confidence.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section class="landing-section cta-section">
-    <div class="container text-center">
-        <h2 class="section-title">Ready to start exploring your future?</h2>
-        <p class="mx-auto mb-4" style="max-width: 650px;">
-            Join LinkedTeens to connect with real opportunities, supportive people, and the kind of guidance that helps high school students thrive.
-        </p>
-        <div class="hero-buttons d-flex justify-content-center gap-3 flex-wrap">
-            <a href="{% url 'accounts:login' %}" class="btn btn-primary btn-lg shadow-sm">
-                Login
-            </a>
-            <a href="{% url 'accounts:register' %}" class="btn btn-outline-primary btn-lg shadow-sm">
-                Register
-            </a>
-        </div>
-    </div>
-</section>
-
+</main>
 {% endblock %}

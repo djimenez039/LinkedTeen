@@ -13,6 +13,9 @@
                 <button type="submit" class="btn btn-light">Log out</button>
             </form>
             {% else %}
+            {% if request.path == '/' %}
+            <a href="{% url 'clubs' %}" class="btn btn-link text-white text-decoration-none">Explore clubs</a>
+            {% endif %}
             <a href="{% url 'accounts:login' %}" class="btn btn-light me-2">Login</a>
             <a href="{% url 'accounts:register' %}" class="btn btn-warning">Register</a>
             {% endif %}
