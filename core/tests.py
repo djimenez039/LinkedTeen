@@ -13,7 +13,10 @@ class PublicPagesTests(TestCase):
 		self.assertContains(response, '1 clubs to explore')
 		self.assertContains(response, reverse('terms'))
 		self.assertContains(response, reverse('privacy'))
-		self.assertContains(response, 'Username and password required; email and photo optional.')
+		self.assertContains(response, 'Ponte Vedra High School students only.')
+		self.assertContains(response, 'Username and password are required; email and profile photo are optional.')
+		self.assertEqual(response.content.decode().count('Ponte Vedra High School students only'), 1)
+		self.assertEqual(response.content.decode().count('By registering, you agree to our'), 0)
 
 	def test_terms_and_privacy_pages_are_public(self):
 		terms_response = self.client.get(reverse('terms'))
