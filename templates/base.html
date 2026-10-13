@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LinkedTeens</title>
+    <title>{% block title %}LinkedTeens{% endblock %}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Rubik:wght@400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
@@ -215,6 +215,59 @@
 
         .cta-section {
             padding-bottom: 110px;
+        }
+
+        .legal-document {
+            max-width: 820px;
+            margin: 0 auto 3rem;
+            color: #1b2b4b;
+            line-height: 1.7;
+        }
+
+        .legal-document h1 {
+            margin-bottom: 8px;
+            color: #2d5ddd;
+            font-family: 'Inter', sans-serif;
+            font-size: clamp(2rem, 5vw, 2.75rem);
+            font-weight: 700;
+            line-height: 1.15;
+        }
+
+        .legal-document h2 {
+            margin: 2rem 0 0.6rem;
+            color: #1b2b4b;
+            font-family: 'Inter', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            line-height: 1.35;
+        }
+
+        .legal-document p,
+        .legal-document li {
+            color: #46556e;
+        }
+
+        .legal-document li + li {
+            margin-top: 0.4rem;
+        }
+
+        .legal-document a,
+        .legal-footer-links a {
+            color: #2d5ddd;
+            text-underline-offset: 3px;
+        }
+
+        .legal-effective-date {
+            margin: 0;
+            color: #65708a;
+        }
+
+        .legal-footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 8px 18px;
+            flex-wrap: wrap;
+            margin-bottom: 8px;
         }
     </style>
     {% block page_styles %}{% endblock %}
