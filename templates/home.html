@@ -94,9 +94,13 @@
         line-height: 1.55;
     }
 
-    .signup-panel {
+    .signup-column {
         width: 100%;
         max-width: 390px;
+    }
+
+    .signup-panel {
+        width: 100%;
     }
 
     .club-count {
@@ -158,14 +162,22 @@
     }
 
     .terms-notice {
-        margin-top: 14px;
+        margin-top: 6px;
+    }
+
+    .signup-note,
+    .legal-consent {
+        margin: 8px 0 0;
+        color: #65708A;
+        font-size: 0.78rem;
+        line-height: 1.45;
     }
 
     .terms-notice h2 {
         margin: 0 0 4px;
-        color: #1B2B4B;
+        color: #65708A;
         font-size: 0.86rem;
-        font-weight: 700;
+        font-weight: 600;
     }
 
     .terms-notice .legal-consent {
@@ -209,8 +221,11 @@
             font-size: 1.1rem;
         }
 
-        .signup-panel {
+        .signup-column {
             max-width: none;
+        }
+
+        .signup-panel {
             padding: 24px;
             border: 1px solid #DCE5FB;
             border-radius: 12px;
@@ -254,17 +269,19 @@
             <p class="home-description">Find PVHS clubs, upcoming events, and volunteer opportunities. See what&rsquo;s happening and how to get involved.</p>
         </section>
 
-        <section class="signup-panel" aria-label="Registration">
-            <div class="club-count">{{ club_count }} clubs to explore</div>
-            <a class="register-link" href="{% url 'accounts:register' %}">Create your account &rarr;</a>
+        <div class="signup-column">
+            <section class="signup-panel" aria-label="Registration">
+                <div class="club-count">{{ club_count }} clubs to explore</div>
+                <a class="register-link" href="{% url 'accounts:register' %}">Create your account &rarr;</a>
+                <p class="login-prompt">Already registered? <a href="{% url 'accounts:login' %}">Log in</a></p>
+                <p class="home-tagline">Take one small step. Get involved.</p>
+            </section>
             <p class="signup-note">Username and password required; email and photo optional.</p>
             <section class="terms-notice" aria-labelledby="terms-notice-title">
                 <h2 id="terms-notice-title">Terms &amp; Conditions</h2>
                 <p class="legal-consent">By registering, you agree to our <a href="{% url 'terms' %}">Terms &amp; Conditions</a> and <a href="{% url 'privacy' %}">Privacy Policy</a>.</p>
             </section>
-            <p class="login-prompt">Already registered? <a href="{% url 'accounts:login' %}">Log in</a></p>
-            <p class="home-tagline">Take one small step. Get involved.</p>
-        </section>
+        </div>
     </div>
 </main>
 {% endblock %}
